@@ -16,7 +16,7 @@ visual-designer スキルが提案時に参照する型一覧。
 | 散布図 | — | 相関関係 | R (`ggplot2`, `geom_point`) | `.main-visual` | 低〜中 |
 | ジャーニーマップ / タイムライン | ロードマップ | 時系列・ロードマップ・講義構成 | SVG (`/svg-precision`) | `.main-visual` | 中〜高 |
 | 教育イラスト | — | 概念図・情景・模式図 | nanobanana pro (lecture-framework のイラスト生成ツール) | `.main-visual` | 低 |
-| 写真 | — | 実物・装置・現場・植物 | CC画像取得 or 自撮り | `.main-visual` or `.columns` 内 | 低 |
+| 写真 | — | 実物・装置・現場・植物 | CC画像取得 or 自撮り | `.main-visual` or `.columns` 内。key-phraseスライドでは `.key-phrase-visual`（coverクロップ） | 低 |
 
 > **型名の別名**: INFOGRAPHICコメントでは「バーチャート」「パイチャート」等のカタカナ表記も使用可。
 

@@ -56,7 +56,7 @@ report = validate_svg(svg_text)
 
 ## HortEng1st プロジェクトでの使用時
 
-- **モノクロ方針**: stroke/fill は `#666`（標準）、`#333`（強調）、`#999`〜`#ddd`（副次）のみ使用。カラー禁止
+- **配色方針**: フロー図・概念図など単純なSVGはモノクロ（`#666` 標準、`#333` 強調、`#999`〜`#ddd` 副次）。詳しいイラスト（nanobanana等）はカラー許可
 - **アイコン**: `img/icons/` に保存。viewBox は Lucide 互換 `0 0 24 24`、stroke `#666`
 - **スライド図**: viewBox はスクエア `0 0 800 800` またはワイド `0 0 1200 800`
 - **フォント**: `font-family: 'Zen Maru Gothic', sans-serif`

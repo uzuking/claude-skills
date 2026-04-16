@@ -71,13 +71,20 @@ quarto render 後のHTMLをPlaywright MCPで開き、スライドを自動巡回
   });
 
   // 画像のレンダリングサイズ
-  const images = slide.querySelectorAll('img.main-visual, img.col-icon, img.key-phrase-visual');
+  const images = slide.querySelectorAll('img.main-visual, img.col-icon, img.key-phrase-visual, img.key-phrase-illustration');
   const imgData = Array.from(images).map(img => ({
     src: img.src.split('/').pop(),
+    cls: img.className,
     rendered: { w: img.clientWidth, h: img.clientHeight },
     natural: { w: img.naturalWidth, h: img.naturalHeight },
     scaleFactor: img.naturalWidth > 0 ? img.clientWidth / img.naturalWidth : 0
   }));
+
+  // key-phraseスライドの画像充填率
+  const isKeyPhrase = slide.classList.contains('key-phrase');
+  const imgFillRatio = (isKeyPhrase && imgData.length > 0)
+    ? Math.max(...imgData.map(i => i.rendered.h)) / usableHeight
+    : null;
 
   // 空白率
   const contentHeight = maxBottom - rect.top;
@@ -90,7 +97,9 @@ quarto render 後のHTMLをPlaywright MCPで開き、スライドを自動巡回
     blankRatio: Math.round(blankRatio * 100),
     contentHeight: Math.round(contentHeight),
     usableHeight: Math.round(usableHeight),
-    images: imgData
+    images: imgData,
+    isKeyPhrase,
+    imgFillRatio: imgFillRatio !== null ? Math.round(imgFillRatio * 100) : null
   };
 })()
 ```
@@ -100,10 +109,11 @@ quarto render 後のHTMLをPlaywright MCPで開き、スライドを自動巡回
 | # | チェック項目 | 閾値 | 重要度 |
 |:-:|:---|:---|:---|
 | VC1 | コンテンツはみ出し | overflowPx > 0 | 致命的 |
-| VC2 | 空白過多 | blankRatio > 40% | 警告 |
-| VC3 | 画像が極端に小さい | rendered.h < 150px かつ rendered.w < 150px | 警告 |
+| VC2 | 空白過多 | blankRatio > 40%（汎用）、> 25%（key-phraseスライド） | 警告 |
+| VC3 | 画像が極端に小さい | rendered.h < 50px **または** rendered.w < 50px（CSS伝播バグの可能性） | 致命的 |
 | VC4 | 画像スケール過大 | scaleFactor > 1.5（拡大表示で画質劣化） | 情報 |
 | VC5 | 画像スケール過小 | scaleFactor < 0.3（70%以上縮小、R出力が過大） | 情報 |
+| VC6 | key-phrase画像充填不足 | isKeyPhrase かつ imgFillRatio < 35%（画像がスライドの35%未満） | 警告 |
 
 ### Phase 4: 出力
 
